@@ -1,0 +1,45 @@
+---
+# Make an ssh key available for use
+- name: Put the ssh key onto the file system
+  copy:
+    dest: "{{ ar_git_repo_ssh_key_path }}"
+    content: "{{ ar_git_repo_ssh_key | b64decode }}\n"
+    mode: '0600'
+  changed_when: false
+
+# The following are attempts made to get ssh-agent integrated. This falls over when the git module runs as it is not
+# picking up the socket.
+
+#- name: Setup ssh-agent env
+#  set_fact:
+#    _ar_git_repo_ssh_agent_env:
+#      SSH_AUTH_SOCK: "{{ ar_git_repo_ssh_agent_socket }}"
+#
+#- name: Ensure ssh-agent is running
+#  shell: |
+#    SSHAGENT=$(which ssh-agent)
+#    export SSH_AUTH_SOCK={{ ar_git_repo_ssh_agent_socket }}
+#    ssh-add -l &>/dev/null
+#    if [ $? -ge 2 ]; then
+#      mkdir -p $(dirname $SSH_AUTH_SOCK)
+#      ${SSHAGENT} -a "$SSH_AUTH_SOCK" >/dev/null
+#    fi
+#  register: ssh_agent_info
+#  when: ar_git_repo_ssh_key_pass is defined and ar_git_repo_ssh_key_pass != ''
+#  changed_when: false
+#
+#- name: Setup the expect script
+#  set_fact:
+#    ar_git_repo_ssh_add_script: |
+#      spawn ssh-add {{ ar_git_repo_ssh_key_path }}
+#      expect "Enter passphrase for {{ ar_git_repo_ssh_key_path }}:"
+#      send "{{ ar_git_repo_ssh_key_pass }}\n";
+#      expect "Identity added: {{ ar_git_repo_ssh_key_path }} ({{ ar_git_repo_ssh_key_path }})"
+#      interact
+#  when: ar_git_repo_ssh_key_pass is defined and ar_git_repo_ssh_key_pass != ''
+#  changed_when: false
+#
+#- name: Make secured ssh key available
+#  shell: "export SSH_AUTH_SOCK={{ ar_git_repo_ssh_agent_socket }}; echo '{{ ar_git_repo_ssh_add_script }}' | expect"
+#  when: ar_git_repo_ssh_key_pass is defined and ar_git_repo_ssh_key_pass != ''
+#  changed_when: false

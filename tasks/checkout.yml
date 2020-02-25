@@ -1,0 +1,23 @@
+---
+- name: "Assert required vars are present"
+  assert:
+    that: ar_git_repo_assertions
+
+- name: Ensure ssh key is present
+  include_tasks: ssh-key-available.yml
+
+- name: Checkout git repo
+  git:
+    key_file: "{{ ar_git_repo_ssh_key_path }}"
+    repo: "{{ ar_git_repo_url }}"
+    dest: "{{ ar_git_repo_dest }}"
+    accept_hostkey: yes
+#  environment: "{{ _ar_git_repo_ssh_agent_env }}"
+
+- name: Ensure ssh key is absent
+  include_tasks: ssh-key-clear.yml
+
+- name: Ensure gitignore present
+  template:
+    src: git-ignore.j2
+    dest: "{{ ar_git_repo_dest }}/.gitignore"

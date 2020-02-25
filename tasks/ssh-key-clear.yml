@@ -1,0 +1,13 @@
+---
+# Clear the ssh key from the machine
+- name: Remove the ssh key
+  file:
+    path: "{{ ar_git_repo_ssh_key_path }}"
+    state: absent
+  changed_when: false
+
+# See ssh-key-available.yml for why this is commented out
+#- name: Clear ssh-agent
+#  command: ssh-add -D
+#  when: ar_git_repo_ssh_key_pass is defined and ar_git_repo_ssh_key_pass != ''
+#  changed_when: false

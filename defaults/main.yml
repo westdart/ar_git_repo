@@ -1,0 +1,23 @@
+---
+ar_git_repo_assertions: [
+  "ar_git_repo_url     is defined and ar_git_repo_url     is not none",
+  "ar_git_repo_name    is defined and ar_git_repo_name    is not none",
+  "ar_git_repo_ssh_key is defined and ar_git_repo_ssh_key is not none"
+]
+
+ar_git_repo_gitignore_entries: [
+  '__pycache__',
+  '*.pyc',
+  '**/.idea',
+  '**/.project',
+  '**/.pydevproject',
+  '**/.*.swp'
+]
+
+ar_git_repo_name: "{{ ar_git_repo_url.split('/') | last }}"
+ar_git_repo_dest: "/tmp/{{ ar_git_repo_name }}"
+ar_git_repo_subdir: '.'
+ar_git_repo_ssh_key_path: '/tmp/.xyz'
+ar_git_repo_ssh_agent_socket: '/tmp/ssh/agent.ssh'
+
+ar_git_repo_bashrc_file: '/home/$USER/.bashrc'

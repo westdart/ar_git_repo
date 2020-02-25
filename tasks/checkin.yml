@@ -1,0 +1,39 @@
+---
+- name: "Assert required vars are present"
+  assert:
+    that: ar_git_repo_assertions
+
+- name: Check if git status has changed
+  shell: cd {{ ar_git_repo_dest }} && git status --porcelain {{ ar_git_repo_subdir }} | wc -l
+  register: git_status
+  changed_when: false
+
+- name: Add any additional or updated generated files to git
+  shell: cd {{ ar_git_repo_dest }} && git reset HEAD && git add {{ ar_git_repo_subdir }}
+  when: git_status.stdout != "0"
+
+- name: Commit changes to git
+  shell: cd {{ ar_git_repo_dest }} && git commit -m "Update to env data as of {{ ansible_date_time.date }} {{ ansible_date_time.time }}"
+  when: git_status.stdout != "0"
+
+- name: Generate comment (tower)
+  set_fact:
+    comment: "Automated update from Tower issued by {{ tower_user_name }}/({{ tower_user_email }}) to env data as of {{ ansible_date_time.date }} {{ ansible_date_time.time }}"
+  when: tower_user_name is defined
+
+- name: Generate comment (not tower)
+  set_fact:
+    comment: "Automated update issued by {{ ansible_user }} to env data as of {{ ansible_date_time.date }} {{ ansible_date_time.time }}"
+  when: tower_user_name is not defined
+
+- name: Ensure ssh key is present
+  include_tasks: ssh-key-available.yml
+
+- name: Push changes to git repo
+  shell: |
+    cd {{ ar_git_repo_dest }} && \
+    git push
+  when: git_status.stdout != "0"
+
+- name: Ensure ssh key is absent
+  include_tasks: ssh-key-clear.yml
