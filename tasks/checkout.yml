@@ -12,6 +12,7 @@
     repo: "{{ ar_git_repo_url }}"
     dest: "{{ ar_git_repo_dest }}"
     accept_hostkey: yes
+    version: "{{ ar_git_repo_version }}"
 #  environment: "{{ _ar_git_repo_ssh_agent_env }}"
 
 - name: Ensure ssh key is absent
