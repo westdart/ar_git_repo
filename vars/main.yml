@@ -2,3 +2,4 @@
 ar_git_repo_url: null
 ar_git_repo_ssh_key: null
 ar_git_repo_ssh_key_pass: ''
+ar_git_repo_commit_comment: ''

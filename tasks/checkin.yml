@@ -12,19 +12,21 @@
   shell: cd {{ ar_git_repo_dest }} && git reset HEAD && git add {{ ar_git_repo_subdir }}
   when: git_status.stdout != "0"
 
-- name: Commit changes to git
-  shell: cd {{ ar_git_repo_dest }} && git commit -m "Update to env data as of {{ ansible_date_time.date }} {{ ansible_date_time.time }}"
-  when: git_status.stdout != "0"
-
 - name: Generate comment (tower)
   set_fact:
-    comment: "Automated update from Tower issued by {{ tower_user_name }}/({{ tower_user_email }}) to env data as of {{ ansible_date_time.date }} {{ ansible_date_time.time }}"
+    _ar_git_repo_comment: "Automated update to env data issued by {{ tower_user_name }}/({{ tower_user_email }}) as of {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+{{ ar_git_repo_commit_comment }}"
   when: tower_user_name is defined
 
 - name: Generate comment (not tower)
   set_fact:
-    comment: "Automated update issued by {{ ansible_user }} to env data as of {{ ansible_date_time.date }} {{ ansible_date_time.time }}"
+    _ar_git_repo_comment: "Automated update to env data issued by {{ ansible_user }} as of {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+{{ ar_git_repo_commit_comment }}"
   when: tower_user_name is not defined
+
+- name: Commit changes to git
+  shell: cd {{ ar_git_repo_dest }} && git commit -m "{{ _ar_git_repo_comment }}"
+  when: git_status.stdout != "0"
 
 - name: Ensure ssh key is present
   include_tasks: ssh-key-available.yml
