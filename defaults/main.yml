@@ -21,3 +21,6 @@ ar_git_repo_ssh_key_path: '/tmp/.xyz'
 ar_git_repo_ssh_agent_socket: '/tmp/ssh/agent.ssh'
 
 ar_git_repo_bashrc_file: '/home/$USER/.bashrc'
+
+ar_git_repo_username: 'ansible'
+ar_git_repo_email: 'ansible@here.com'

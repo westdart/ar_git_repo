@@ -1,4 +1,24 @@
 ---
+- name: Check if global config username is set
+  command: git config --global --get user.name
+  register: git_config_username
+  failed_when: false
+  changed_when: false
+
+- name: Check if global config email is set
+  command: git config --global --get user.email
+  register: git_config_email
+  failed_when: false
+  changed_when: false
+
+- name: Set the global config username
+  command: git config --global user.name "{{ ar_git_repo_username }}"
+  when: git_config_username.rc != 0
+
+- name: Set the global config username
+  command: git config --global user.email "{{ ar_git_repo_email }}"
+  when: git_config_email.rc != 0
+
 - name: "Assert required vars are present"
   assert:
     that: ar_git_repo_assertions
