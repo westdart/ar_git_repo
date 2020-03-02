@@ -6,7 +6,7 @@
 - name: Ensure ssh key is present
   include_tasks: ssh-key-available.yml
 
-- name: Checkout git repo
+- name: Checkout git repo {{ ar_git_repo_url }} to {{ ar_git_repo_dest }}
   git:
     key_file: "{{ ar_git_repo_ssh_key_path }}"
     repo: "{{ ar_git_repo_url }}"

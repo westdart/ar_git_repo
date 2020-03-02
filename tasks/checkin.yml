@@ -44,7 +44,7 @@
 {{ ar_git_repo_commit_comment }}"
   when: tower_user_name is not defined
 
-- name: Commit changes to git
+- name: Commit changes to git repo {{ ar_git_repo_url }} from {{ ar_git_repo_dest }}
   shell: cd {{ ar_git_repo_dest }} && git commit -m "{{ _ar_git_repo_comment }}"
   when: git_status.stdout != "0"
 
