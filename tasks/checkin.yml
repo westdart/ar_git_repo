@@ -19,9 +19,9 @@
   command: git config --global user.email "{{ ar_git_repo_email }}"
   when: git_config_email.rc != 0
 
-- name: "Assert required vars are present"
+- name: "Assertions: ar_git_repo (checkin)"
   assert:
-    that: ar_git_repo_assertions
+    that: "{{ ar_git_repo_assertions }}"
 
 - name: Check if git status has changed
   shell: cd {{ ar_git_repo_dest }} && git status --porcelain {{ ar_git_repo_subdir }} | wc -l

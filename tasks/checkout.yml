@@ -1,7 +1,7 @@
 ---
-- name: "Assert required vars are present"
+- name: "Assertions: ar_git_repo (checkout)"
   assert:
-    that: ar_git_repo_assertions
+    that: "{{ ar_git_repo_assertions }}"
 
 - name: Ensure ssh key is present
   include_tasks: ssh-key-available.yml
