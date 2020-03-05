@@ -1,9 +1,14 @@
 ---
-ar_git_repo_assertions: [
-  "ar_git_repo_url     is defined and ar_git_repo_url     is not none",
-  "ar_git_repo_name    is defined and ar_git_repo_name    is not none",
-  "ar_git_repo_ssh_key is defined and ar_git_repo_ssh_key is not none"
-]
+ar_git_repo_assertions:
+  - "ar_git_repo_url is defined"
+  - "ar_git_repo_url is not none"
+  - "ar_git_repo_url | length"
+  - "ar_git_repo_name is defined"
+  - "ar_git_repo_name is not none"
+  - "ar_git_repo_name | length"
+  - "ar_git_repo_ssh_key is defined"
+  - "ar_git_repo_ssh_key is not none"
+  - "ar_git_repo_ssh_key | length"
 
 ar_git_repo_gitignore_entries: [
   '__pycache__',
