@@ -1,0 +1,4 @@
+Host {{ ar_git_repo_url | get_hostname }}
+  HostName {{ ar_git_repo_url | get_hostname }}
+  IdentityFile {{ ar_git_repo_ssh_key_path }}
+  User {{ ar_git_repo_user }}

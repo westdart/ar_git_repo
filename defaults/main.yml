@@ -22,8 +22,9 @@ ar_git_repo_gitignore_entries: [
 ar_git_repo_name: "{{ ar_git_repo_url.split('/') | last }}"
 ar_git_repo_dest: "/tmp/{{ ar_git_repo_name }}"
 ar_git_repo_subdir: '.'
-ar_git_repo_ssh_key_path: '/tmp/.xyz'
+ar_git_repo_ssh_key_path: "{{ ansible_env.HOME}}/.ssh/ansible-id_rsa"
 ar_git_repo_ssh_agent_socket: '/tmp/ssh/agent.ssh'
+ar_git_repo_user: 'git'
 
 ar_git_repo_bashrc_file: '/home/$USER/.bashrc'
 

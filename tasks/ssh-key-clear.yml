@@ -6,8 +6,7 @@
     state: absent
   changed_when: false
 
-# See ssh-key-available.yml for why this is commented out
-#- name: Clear ssh-agent
-#  command: ssh-add -D
-#  when: ar_git_repo_ssh_key_pass is defined and ar_git_repo_ssh_key_pass != ''
-#  changed_when: false
+- name: Clear ssh-agent
+  shell: export SSH_AUTH_SOCK={{ ar_git_repo_ssh_agent_socket }}; ssh-add -D
+  changed_when: false
+  when: ar_git_repo_ssh_key_pass is defined and ar_git_repo_ssh_key_pass != ''
