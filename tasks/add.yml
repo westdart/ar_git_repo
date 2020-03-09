@@ -1,0 +1,15 @@
+---
+# TODO - check if file is already added/committed and, in such case, do nothing
+- name: Ensure ssh key is present
+  include_tasks: ssh-key-available.yml
+
+- name: Add new file
+  shell: git add $(basename {{ ar_git_repo_item }})
+  args:
+    chdir: "{{ ar_git_repo_item | dirname }}"
+  with_items: "{{ ar_git_repo_add_list | flatten }}"
+  loop_control:
+    loop_var: ar_git_repo_item
+
+- name: Commit and push changes
+  include_tasks: checkin.yml

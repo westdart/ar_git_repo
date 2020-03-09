@@ -1,36 +1,12 @@
 ---
-- name: Check if global config username is set
-  command: git config --global --get user.name
-  register: git_config_username
-  failed_when: false
-  changed_when: false
-
-- name: Check if global config email is set
-  command: git config --global --get user.email
-  register: git_config_email
-  failed_when: false
-  changed_when: false
-
-- name: Set the global config username
-  command: git config --global user.name "{{ ar_git_repo_username }}"
-  when: git_config_username.rc != 0
-
-- name: Set the global config username
-  command: git config --global user.email "{{ ar_git_repo_email }}"
-  when: git_config_email.rc != 0
-
 - name: "Assertions: ar_git_repo (checkin)"
   assert:
     that: "{{ ar_git_repo_assertions }}"
 
 - name: Check if git status has changed
-  shell: cd {{ ar_git_repo_dest }} && git status --porcelain {{ ar_git_repo_subdir }} | wc -l
+  shell: cd {{ _ar_git_repo_paths[ar_git_repo_url] }} && git status --porcelain {{ ar_git_repo_subdir }} | wc -l
   register: git_status
   changed_when: false
-
-- name: Add any additional or updated generated files to git
-  shell: cd {{ ar_git_repo_dest }} && git add --all {{ ar_git_repo_subdir }}
-  when: git_status.stdout != "0"
 
 - name: Generate comment (tower)
   set_fact:
@@ -44,8 +20,8 @@
 {{ ar_git_repo_commit_comment }}"
   when: tower_user_name is not defined
 
-- name: Commit changes to git repo {{ ar_git_repo_url }} from {{ ar_git_repo_dest }}
-  shell: cd {{ ar_git_repo_dest }} && git commit -m "{{ _ar_git_repo_comment }}"
+- name: Commit changes to git repo {{ ar_git_repo_url }} from {{ _ar_git_repo_paths[ar_git_repo_url] }}
+  shell: cd {{ _ar_git_repo_paths[ar_git_repo_url] }} && git commit -m "{{ _ar_git_repo_comment }}"
   when: git_status.stdout != "0"
 
 - name: Ensure ssh key is present
@@ -53,7 +29,7 @@
 
 - name: Push changes to git repo
   shell: |
-    cd {{ ar_git_repo_dest }} && \
+    cd {{ _ar_git_repo_paths[ar_git_repo_url] }} && \
     git push
   when: git_status.stdout != "0"
 

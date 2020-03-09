@@ -1,0 +1,3 @@
+---
+- name: Reset the git state back to HEAD
+  shell: cd {{ _ar_git_repo_paths[ar_git_repo_url] }} && git reset HEAD && git checkout .

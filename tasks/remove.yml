@@ -1,0 +1,15 @@
+---
+- name: Ensure ssh key is present
+  include_tasks: ssh-key-available.yml
+
+- name: Remove existing file
+  shell: git rm $(basename {{ ar_git_repo_item }})
+  args:
+    chdir: "{{ ar_git_repo_item | dirname }}"
+    removes: "{{ ar_git_repo_item }}"
+  with_items: "{{ ar_git_repo_remove_list | flatten }}"
+  loop_control:
+    loop_var: ar_git_repo_item
+
+- name: Commit and push changes
+  include_tasks: checkin.yml

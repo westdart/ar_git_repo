@@ -10,6 +10,10 @@ def get_hostname(url):
 
     return re.split('[@:/]', url)[index]
 
+def repo_dict(repo_dictionary, repourl, repopath):
+    repo_dictionary[repourl] = repopath
+    return repo_dictionary
+
 class FilterModule(object):
     '''
     custom jinja2 filters for working with collections
@@ -17,7 +21,8 @@ class FilterModule(object):
 
     def filters(self):
         return {
-            'get_hostname': get_hostname
+            'get_hostname': get_hostname,
+            'repo_dict': repo_dict
         }
 
 '''

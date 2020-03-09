@@ -4,3 +4,4 @@ ar_git_repo_ssh_key: null
 ar_git_repo_ssh_key_pass: ''
 ar_git_repo_commit_comment: ''
 ar_git_repo_version: 'master'
+ar_git_repo_remove_list: []

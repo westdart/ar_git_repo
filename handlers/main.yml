@@ -1,0 +1,6 @@
+---
+- name: Remove git repo from filesystem
+  file:
+    path: "{{ _ar_git_repo_paths[ar_git_repo_url] }}"
+    state: absent
+  changed_when: false
