@@ -13,7 +13,7 @@
   changed_when: false
 
 - name: Include tasks to integrate ssh-agent
-  include_tasks:
+  include_tasks: ssh-agent.yml
   when: ar_git_repo_ssh_key_pass is defined and ar_git_repo_ssh_key_pass != ''
 
 - name: Ensure ssh config is set

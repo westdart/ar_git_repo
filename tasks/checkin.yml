@@ -29,7 +29,7 @@
   changed_when: false
 
 - name: Add any additional or updated generated files to git
-  shell: cd {{ ar_git_repo_dest }} && git reset HEAD && git add {{ ar_git_repo_subdir }}
+  shell: cd {{ ar_git_repo_dest }} && git add --all {{ ar_git_repo_subdir }}
   when: git_status.stdout != "0"
 
 - name: Generate comment (tower)
