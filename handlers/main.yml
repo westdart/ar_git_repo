@@ -7,3 +7,9 @@
   loop_control:
     loop_var: ar_git_repo_item
   changed_when: false
+  listen: "cleanup"
+
+- name: Reset vars
+  set_fact:
+    ar_git_repo_auto_cleanup: "{{ _ar_git_repo_auto_cleanup }}"
+  listen: "cleanup"

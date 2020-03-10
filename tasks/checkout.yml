@@ -22,9 +22,14 @@
     _ar_git_repo_paths: "{{ _ar_git_repo_paths | repo_dict(ar_git_repo_url, tmp_path) }}"
   when: ar_git_repo_url not in _ar_git_repo_paths
 
+- name: Setfact to record original value of ar_git_repo_auto_cleanup
+  set_fact:
+    _ar_git_repo_auto_cleanup: "{{ ar_git_repo_auto_cleanup }}"
+  when: ar_git_repo_auto_cleanup
+
 - name: Trigger removal of local git directory
   command: /bin/true
-  notify: Remove git repo from filesystem
+  notify: cleanup
   when: ar_git_repo_auto_cleanup
 
 - name: Switch off ar_git_repo_auto_cleanup (already triggered notify if was set true)
