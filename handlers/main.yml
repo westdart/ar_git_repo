@@ -1,6 +1,9 @@
 ---
 - name: Remove git repo from filesystem
   file:
-    path: "{{ _ar_git_repo_paths[ar_git_repo_url] }}"
+    path: "{{ ar_git_repo_item.value }}"
     state: absent
+  with_dict: "{{ _ar_git_repo_paths }}"
+  loop_control:
+    loop_var: ar_git_repo_item
   changed_when: false

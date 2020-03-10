@@ -2,10 +2,12 @@
 - name: Ensure ssh key is present
   include_tasks: ssh-key-available.yml
 
-- name: Check if git status has changed
+- name: Check if git status has changed (on update)
   shell: cd {{ _ar_git_repo_paths[ar_git_repo_url] }} && git status --porcelain {{ ar_git_repo_subdir }} | wc -l
   register: git_status
   changed_when: false
+
+- debug: var=git_status verbosity=2
 
 - name: Add any additional or updated generated files to git
   shell: cd {{ _ar_git_repo_paths[ar_git_repo_url] }} && git add --all {{ ar_git_repo_subdir }}
