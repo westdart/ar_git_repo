@@ -3,9 +3,6 @@ ar_git_repo_assertions:
   - "ar_git_repo_url is defined"
   - "ar_git_repo_url is not none"
   - "ar_git_repo_url | length"
-  - "ar_git_repo_name is defined"
-  - "ar_git_repo_name is not none"
-  - "ar_git_repo_name | length"
   - "ar_git_repo_ssh_key is defined"
   - "ar_git_repo_ssh_key is not none"
   - "ar_git_repo_ssh_key | length"
@@ -24,8 +21,6 @@ ar_git_repo_subdir: '.'
 ar_git_repo_ssh_key_path: "{{ ansible_env.HOME}}/.ssh/ansible-id_rsa"
 ar_git_repo_ssh_agent_socket: '/tmp/ssh/agent.ssh'
 ar_git_repo_user: 'git'
-
-ar_git_repo_bashrc_file: '/home/$USER/.bashrc'
 
 ar_git_repo_username: 'ansible'
 ar_git_repo_email: 'ansible@here.com'

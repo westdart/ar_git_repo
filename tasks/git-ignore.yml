@@ -1,0 +1,28 @@
+---
+- name: Ensure gitignore present
+  template:
+    src: git-ignore.j2
+    dest: "{{ _ar_git_repo_paths[ar_git_repo_url] }}/.gitignore"
+  register: git_ignore
+
+- name: Add .gitignore
+  shell: git add .gitignore
+  args:
+    chdir: "{{ _ar_git_repo_paths[ar_git_repo_url] }}"
+  when: git_ignore.changed
+
+- set_fact:
+    _ar_git_repo_commit_comment_save: "{{ ar_git_repo_commit_comment }}"
+  when: git_ignore.changed
+
+- set_fact:
+    ar_git_repo_commit_comment: "Update .gitignore"
+  when: git_ignore.changed
+
+- name: Checking .gitignore
+  include_tasks: _checkin.yml
+  when: git_ignore.changed
+
+- set_fact:
+    ar_git_repo_commit_comment: "{{ _ar_git_repo_commit_comment_save }}"
+  when: git_ignore.changed

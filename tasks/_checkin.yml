@@ -1,0 +1,34 @@
+---
+- name: "Assertions: ar_git_repo (checkin)"
+  assert:
+    that: "{{ ar_git_repo_assertions }}"
+
+- name: Check if git status has changed
+  shell: cd {{ _ar_git_repo_paths[ar_git_repo_url] }} && git status --porcelain {{ ar_git_repo_subdir }} | wc -l
+  register: git_status
+  changed_when: false
+
+- name: Generate comment (tower)
+  set_fact:
+    _ar_git_repo_comment: "Automated update to env data issued by {{ tower_user_name }}/({{ tower_user_email }}) as of {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+{{ ar_git_repo_commit_comment }}"
+  when: tower_user_name is defined
+
+- name: Generate comment (not tower)
+  set_fact:
+    _ar_git_repo_comment: "Automated update to env data issued by {{ ansible_user }} as of {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+{{ ar_git_repo_commit_comment }}"
+  when: tower_user_name is not defined
+
+- name: Commit changes to git repo {{ ar_git_repo_url }} from {{ _ar_git_repo_paths[ar_git_repo_url] }}
+  shell: cd {{ _ar_git_repo_paths[ar_git_repo_url] }} && git commit -m "{{ _ar_git_repo_comment }}"
+  when: git_status.stdout != "0"
+
+- name: Ensure ssh key is present
+  include_tasks: ssh-key-available.yml
+
+- name: Push changes to git repo
+  shell: |
+    cd {{ _ar_git_repo_paths[ar_git_repo_url] }} && \
+    git push
+  when: git_status.stdout != "0"

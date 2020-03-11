@@ -49,10 +49,9 @@
 #  environment: "{{ _ar_git_repo_ssh_agent_env }}"
   changed_when: ar_git_repo_mark_change_on_clone
 
+- name: Ensure .gitignore
+  include_tasks: git-ignore.yml
+
 - name: Ensure ssh key is absent
   include_tasks: ssh-key-clear.yml
 
-- name: Ensure gitignore present
-  template:
-    src: git-ignore.j2
-    dest: "{{ _ar_git_repo_paths[ar_git_repo_url] }}/.gitignore"

@@ -13,3 +13,7 @@
   set_fact:
     ar_git_repo_auto_cleanup: "{{ _ar_git_repo_auto_cleanup }}"
   listen: "cleanup"
+
+- name: Remove ssh key
+  include_tasks: ssh-key-clear.yml
+  listen: "cleanup"
