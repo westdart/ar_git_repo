@@ -1,18 +1,21 @@
 import re
 
 def get_hostname(url):
-    if url.startswith('https'):
-      index=3
+    if url.startswith('http'):
+        index = 3
+    elif url.startswith('https'):
+        index = 3
     elif url.startswith('git'):
-      index = 1
+        index = 1
     elif url.startswith('ssh'):
-      index=4
+        index = 4
 
     return re.split('[@:/]', url)[index]
 
 def repo_dict(repo_dictionary, repourl, repopath):
     repo_dictionary[repourl] = repopath
     return repo_dictionary
+
 
 class FilterModule(object):
     '''
@@ -24,6 +27,7 @@ class FilterModule(object):
             'get_hostname': get_hostname,
             'repo_dict': repo_dict
         }
+
 
 '''
 Testing
