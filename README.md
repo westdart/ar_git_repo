@@ -41,6 +41,14 @@ The following variables should be provided through an encrypted source:
 - ar_git_repo_ssh_key
 - ar_git_repo_ssh_key_pass
 
+### External variables
+The following external variables are defined for use outside of this 
+role:
+
+| Variable          | Description                                                   | Default |
+| --------          | -----------                                                   | ------- |
+| ar_git_repo_paths | Dictionary of git cloned directory locations keyed on git url | {}      |
+
 ## Task groups
 The following is a list of task files that can be invoked separately:
 - main: Invoke 'checkout'

@@ -11,16 +11,16 @@
 
 - name: Setfact for repo-dir user supplied
   set_fact:
-    _ar_git_repo_paths: "{{ _ar_git_repo_paths | repo_dict(ar_git_repo_url, ar_git_repo_dest) }}"
-  when: ar_git_repo_dest is defined and ar_git_repo_url not in _ar_git_repo_paths
+    _ar_git_repo_paths: "{{ ar_git_repo_paths | repo_dict(ar_git_repo_url, ar_git_repo_dest) }}"
+  when: ar_git_repo_dest is defined and ar_git_repo_url not in ar_git_repo_paths
 
 - set_fact:
     tmp_path: "/tmp/git/{{ ar_git_repo_url.split('/') | last }}-{{ 100000 | random }}"
 
 - name: Setfact for repo-dir generated
   set_fact:
-    _ar_git_repo_paths: "{{ _ar_git_repo_paths | repo_dict(ar_git_repo_url, tmp_path) }}"
-  when: ar_git_repo_url not in _ar_git_repo_paths
+    ar_git_repo_paths: "{{ ar_git_repo_paths | repo_dict(ar_git_repo_url, tmp_path) }}"
+  when: ar_git_repo_url not in ar_git_repo_paths
 
 - name: Setfact to record original value of ar_git_repo_auto_cleanup
   set_fact:
@@ -37,13 +37,13 @@
     ar_git_repo_auto_cleanup: false
   when: ar_git_repo_auto_cleanup
 
-- debug: var=_ar_git_repo_paths verbosity=2
+- debug: var=ar_git_repo_paths verbosity=2
 
-- name: Checkout git repo {{ ar_git_repo_url }} to {{ _ar_git_repo_paths[ar_git_repo_url] }}
+- name: Checkout git repo {{ ar_git_repo_url }} to {{ ar_git_repo_paths[ar_git_repo_url] }}
   git:
     key_file: "{{ ar_git_repo_ssh_key_path }}"
     repo: "{{ ar_git_repo_url }}"
-    dest: "{{ _ar_git_repo_paths[ar_git_repo_url] }}"
+    dest: "{{ ar_git_repo_paths[ar_git_repo_url] }}"
     accept_hostkey: yes
     version: "{{ ar_git_repo_version }}"
 #  environment: "{{ _ar_git_repo_ssh_agent_env }}"

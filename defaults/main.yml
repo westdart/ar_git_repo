@@ -27,7 +27,7 @@ ar_git_repo_email: 'ansible@here.com'
 
 ar_git_repo_mark_change_on_clone: false
 
+ar_git_repo_paths: {}
+
 ar_git_repo_auto_cleanup: true
 _ar_git_repo_auto_cleanup: false
-
-_ar_git_repo_paths: {}
